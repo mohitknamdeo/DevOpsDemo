@@ -1,7 +1,7 @@
 pipeline {
   agent any
   stages {
-    stage("Repo checkout and Maven Build") {
+    stage('Repo checkout and Maven Build') {
       agent {
         node {
           label 'docker-maven-slave'
@@ -11,6 +11,11 @@ pipeline {
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mohitknamdeo/DevOpsDemo.git']]])
         sh 'mvn clean package'
       }
+    }
+    stage('Quality Check with SonarQube') {
+      withSonarQubeEnv('sq1') { 
+		    sh "mvn sonar:sonar"
+		  }
     }
   }
 }
