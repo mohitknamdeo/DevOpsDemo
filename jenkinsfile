@@ -56,7 +56,10 @@ pipeline {
       }
       post {
         always{
-          slackSend channel: '#alert', teamDomain: 'jenkins-training', tokenCredentialId: 'slack-notifier'
+          slackSend channel: '#alert', 
+	  message: 'started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)', 
+	  teamDomain: 'jenkins-training', 
+	  tokenCredentialId: 'slack-notifier'
         }
       }
     }
