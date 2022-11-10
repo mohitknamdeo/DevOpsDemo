@@ -7,7 +7,12 @@ pipeline {
   stages {
     stage('Maven Build') {
       steps {
-        checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mohitknamdeo/DevOpsDemo.git']]])
+        checkout([
+		$class: 'GitSCM', 
+		branches: [[name: '*/master']], 
+		extensions: [], 
+		userRemoteConfigs: [[url: 'https://github.com/mohitknamdeo/DevOpsDemo.git']]
+		])
         sh 'mvn clean package'
       }
     }
@@ -20,7 +25,40 @@ pipeline {
     }
     stage('Push the Artifact into Nexus') {
       steps {
-      	nexusArtifactUploader artifacts: [[artifactId: 'DevOpsDemo', classifier: '', file: 'target/DevOpsDemo.war', type: 'war']], credentialsId: 'nexus-repository-upload', groupId: 'com.blazeclan', nexusUrl: '172.31.13.55:8081/nexus', nexusVersion: 'nexus2', protocol: 'http', repository: 'maven-central', version: '${BUILD_NUMBER}'
+      	nexusArtifactUploader 
+		artifacts: [
+			[
+				artifactId: 'DevOpsDemo', 
+				classifier: '', 
+				file: 'target/DevOpsDemo.war', 
+				type: 'war'
+			]
+		], 
+		credentialsId: 'nexus-repository-upload', 
+		groupId: 'com.blazeclan', 
+		nexusUrl: '172.31.13.55:8081/nexus', 
+		nexusVersion: 'nexus2', 
+		protocol: 'http', 
+		repository: 'maven-central', 
+		version: '${BUILD_NUMBER}'
+      }
+    }
+    stage('Pull the Artifact from Nexus and Deploy on Tomcat') {
+      agent any
+      steps {
+      	sh 'curl -X GET http://mohit:highrisk@3.110.218.42:8081/nexus/service/local/repositories/maven-central/content/com/blazeclan/DevOpsDemo/0.0.${BUILD_NUMBER}/DevOpsDemo-0.0.${BUILD_NUMBER}.war -o DevOpsDemo-${BUILD_NUMBER}.war'
+	deploy adapters: [
+		tomcat9(credentialsId: 'tomcat-cred', 
+		path: '', 
+		url: 'http://tomcat:8080')
+	], 
+	contextPath: 'DevOpsDemo-${BUILD_NUMBER}', 
+	war: '**/*.war'
+      }
+      post {
+        always{
+          slackSend channel: '#alert', teamDomain: 'jenkins-training', tokenCredentialId: 'slack-notifier'
+        }
       }
     }
   }
