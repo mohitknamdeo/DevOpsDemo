@@ -1,4 +1,3 @@
-def WarVersion=${BUILD_NUMBER}
 pipeline {
   agent {
     node {
@@ -40,11 +39,12 @@ pipeline {
 	nexusVersion: 'nexus2', 
 	protocol: 'http', 
 	repository: 'maven-central', 
-	version: '${WarVersion}'
+	version: '${BUILD_NUMBER}'
       }
     }
     stage('Pull the Artifact from Nexus and Deploy on Production') {
       agent any
+      def WarVersion = ${BUILD_NUMBER}
       steps {
       	sh 'curl -X GET http://mohit:highrisk@3.110.218.42:8081/nexus/service/local/repositories/maven-central/content/com/blazeclan/DevOpsDemo/${WarVersion}/DevOpsDemo-${WarVersion}.war -o DevOpsDemo-${WarVersion}.war'
 	deploy adapters: [
