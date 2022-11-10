@@ -25,22 +25,21 @@ pipeline {
     }
     stage('Push the Artifact into Nexus') {
       steps {
-      	nexusArtifactUploader 
-		artifacts: [
+      	nexusArtifactUploader artifacts: [
 			[
 				artifactId: 'DevOpsDemo', 
 				classifier: '', 
 				file: 'target/DevOpsDemo.war', 
 				type: 'war'
 			]
-		], 
-		credentialsId: 'nexus-repository-upload', 
-		groupId: 'com.blazeclan', 
-		nexusUrl: '172.31.13.55:8081/nexus', 
-		nexusVersion: 'nexus2', 
-		protocol: 'http', 
-		repository: 'maven-central', 
-		version: '${BUILD_NUMBER}'
+	], 
+	credentialsId: 'nexus-repository-upload', 
+	groupId: 'com.blazeclan', 
+	nexusUrl: '172.31.13.55:8081/nexus', 
+	nexusVersion: 'nexus2', 
+	protocol: 'http', 
+	repository: 'maven-central', 
+	version: '${BUILD_NUMBER}'
       }
     }
     stage('Pull the Artifact from Nexus and Deploy on Tomcat') {
