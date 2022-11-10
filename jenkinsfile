@@ -1,9 +1,14 @@
 pipeline {
   stages {
-    stage("Repo checkout") {
-      agent any
+    stage("Repo checkout and Maven Build") {
+      agent {
+        node {
+          label 'docker-maven-slave'
+        }
+      }
       steps {
-        
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mohitknamdeo/DevOpsDemo.git']]])
+        sh 'mvn clean package'
       }
     }
   }
