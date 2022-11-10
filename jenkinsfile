@@ -1,0 +1,10 @@
+pipeline {
+  stages {
+    stage("Repo checkout") {
+      agent any
+      steps {
+        
+      }
+    }
+  }
+}
