@@ -58,7 +58,7 @@ pipeline {
   }
   post {
     always{
-      slackSend channel: '#alert', message: 'Build Status: ${JOB_NAME} ${BUILD_NUMBER} (<${BUILD_URL}|Open>)', teamDomain: 'jenkins-trainingtalk', tokenCredentialId: 'slack-notifier'
+      slackSend channel: '#alert', color: 'good', message: 'Build is in progress', teamDomain: 'jenkins-trainingtalk', tokenCredentialId: 'slack-notifier'
 	deleteDir()
       }
    }
