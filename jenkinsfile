@@ -56,8 +56,8 @@ pipeline {
       }
       post {
         always{
-	  deleteDir()
           slackSend channel: '#alert', message: 'Build Started: ${JOB_NAME} ${BUILD_NUMBER} (<${BUILD_URL}|Open>)', teamDomain: 'jenkins-trainingtalk', tokenCredentialId: 'slack-notifier'
+	  deleteDir()
         }
       }
     }
