@@ -18,7 +18,7 @@ pipeline {
     }
     stage('Quality Check of codes with SonarQube') {
       steps {
-      	withSonarQubeEnv('sonarqube') { 
+      	withSonarQubeEnv('sonar') { 
 	  sh "mvn sonar:sonar"
 	}
       }
@@ -35,31 +35,31 @@ pipeline {
 	], 
 	credentialsId: 'nexus-repository-upload', 
 	groupId: 'com.blazeclan', 
-	nexusUrl: '172.31.13.55:8081/nexus', 
-	nexusVersion: 'nexus2', 
+	nexusUrl: 'nexus:8081', 
+	nexusVersion: 'nexus3', 
 	protocol: 'http', 
 	repository: 'maven-central', 
 	version: '${BUILD_NUMBER}'
       }
     }
-    stage('Pull the Artifact from Nexus and Deploy on Production') {
+    /*stage('Pull the Artifact from Nexus and Deploy on Production') {
       agent any
       steps {
-      	sh 'curl -X GET http://mohit:highrisk@3.110.218.42:8081/nexus/service/local/repositories/maven-central/content/com/blazeclan/DevOpsDemo/${BUILD_NUMBER}/DevOpsDemo-${BUILD_NUMBER}.war -o DevOpsDemo-${BUILD_NUMBER}.war'
+      	sh 'curl -X GET http://admin:admin@nexus:8081/nexus/service/local/repositories/maven-central/content/com/blazeclan/DevOpsDemo/${BUILD_NUMBER}/DevOpsDemo-${BUILD_NUMBER}.war -o DevOpsDemo-${BUILD_NUMBER}.war'
 	deploy adapters: [
 		tomcat9(credentialsId: 'tomcat-cred', 
 		path: '', 
-		url: 'http://tomcat:8080')
+		url: 'http://tomcat:9090')
 	], 
 	contextPath: 'DevOpsDemo-App', 
 	war: '**/*.war'
       }
     }
   }
-  post {
+  /*post {
     always{
       slackSend channel: '#alert', color: 'good', message: 'Build is in progress', teamDomain: 'jenkins-trainingtalk', tokenCredentialId: 'slack-notifier'
 	deleteDir()
       }
-   }
+   }*/
 }
