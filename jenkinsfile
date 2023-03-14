@@ -38,14 +38,14 @@ pipeline {
 	nexusUrl: 'http://13.126.20.121:8081', 
 	nexusVersion: 'nexus3', 
 	protocol: 'http', 
-	repository: 'maven-central', 
+	repository: 'maven-releases', 
 	version: '${BUILD_NUMBER}'
       }
     }
     stage('Pull the Artifact from Nexus and Deploy on Production') {
       agent any
       steps {
-      	sh 'curl -X GET http://admin:admin@nexus:8081/nexus/service/local/repositories/maven-central/content/com/blazeclan/DevOpsDemo/${BUILD_NUMBER}/DevOpsDemo-${BUILD_NUMBER}.war -o DevOpsDemo-${BUILD_NUMBER}.war'
+      	sh 'curl -X GET http://admin:admin@nexus:8081/nexus/service/local/repositories/maven-releases/content/com/blazeclan/DevOpsDemo/${BUILD_NUMBER}/DevOpsDemo-${BUILD_NUMBER}.war -o DevOpsDemo-${BUILD_NUMBER}.war'
 	deploy adapters: [
 		tomcat9(credentialsId: 'tomcat-cred', 
 		path: '', 
