@@ -1,7 +1,7 @@
 pipeline {
   agent {
     node {
-      label 'docker-maven-slave'
+      label 'maven-slave'
     }
   }
   stages {
@@ -33,7 +33,7 @@ pipeline {
 				type: 'war'
 			]
 	], 
-	credentialsId: 'nexus-repository-upload', 
+	credentialsId: 'nexusauth', 
 	groupId: 'com.blazeclan', 
 	nexusUrl: 'nexus:8081', 
 	nexusVersion: 'nexus3', 
@@ -55,7 +55,7 @@ pipeline {
 	war: '**/*.war'
       }
     }
-  }
+  }*/
   /*post {
     always{
       slackSend channel: '#alert', color: 'good', message: 'Build is in progress', teamDomain: 'jenkins-trainingtalk', tokenCredentialId: 'slack-notifier'
