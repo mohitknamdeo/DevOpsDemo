@@ -51,7 +51,7 @@ pipeline {
       agent any
       steps {
       	sh 'curl -X GET http://admin:admin@nexus:8081/nexus/service/local/repositories/demo-repo/content/com/blazeclan/DevOpsDemo/${BUILD_NUMBER}/DevOpsDemo-${BUILD_NUMBER}.war -o DevOpsDemo.war'
-	deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://tomcat:9090')], contextPath: 'DevOpsDemo', war: '**/*.war'
+	deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://13.126.20.121:9090')], contextPath: 'DevOpsDemo', war: '**/*.war'
       }
     }
   }
