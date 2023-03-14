@@ -13,7 +13,7 @@ pipeline {
 		extensions: [], 
 		userRemoteConfigs: [[url: 'https://github.com/mohitknamdeo/DevOpsDemo.git']]
 		])
-        sh 'mvn clean install'
+        sh 'mvn clean package'
       }
     }
     stage('Quality Check of codes with SonarQube') {
