@@ -51,7 +51,7 @@ pipeline {
     }
   }
   /*post {
-    always{
+    failure{
       slackSend channel: '#alert', color: 'good', message: 'Build is in progress', teamDomain: 'jenkins-trainingtalk', tokenCredentialId: 'slack-notifier'
 	deleteDir()
       }
