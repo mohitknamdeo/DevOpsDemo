@@ -1,9 +1,10 @@
 pipeline {
-  agent {
+  agent any 
+  /*{
     node {
       label 'maven-slave'
     }
-  }
+  }*/
   stages {
     stage('Maven Build') {
       steps {
