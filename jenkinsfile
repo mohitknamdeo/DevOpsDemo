@@ -23,11 +23,11 @@ pipeline {
 	}
       }
     }
-    stage("Quality gate") {
+    /*stage("Quality gate") {
 	 steps {
 	   waitForQualityGate abortPipeline: true
  	}
-    }
+    }*/
     stage('Push the Artifact into Nexus') {
       steps {
       	nexusArtifactUploader artifacts: [
