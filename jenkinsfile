@@ -7,12 +7,12 @@ pipeline {
   stages {
     stage('Maven Build') {
       steps {
-        //checkout([
-	//	$class: 'GitSCM', 
-	//	branches: [[name: '*/master']], 
-	//	extensions: [], 
-	//	userRemoteConfigs: [[url: 'https://github.com/mohitknamdeo/DevOpsDemo.git']]
-	//	])
+        checkout([
+		$class: 'GitSCM', 
+		branches: [[name: '*/master']], 
+		extensions: [], 
+		userRemoteConfigs: [[url: 'https://github.com/mohitknamdeo/DevOpsDemo.git']]
+		])
         sh 'mvn -U clean install'
       }
     }
@@ -23,11 +23,11 @@ pipeline {
 	}
       }
     }
-    /*stage("Quality gate") {
+    stage("Quality gate") {
 	 steps {
 	   waitForQualityGate abortPipeline: true
  	}
-    }*/
+    }
     stage('Push the Artifact into Nexus') {
       steps {
       	nexusArtifactUploader artifacts: [
