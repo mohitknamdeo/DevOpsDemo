@@ -31,12 +31,12 @@ pipeline {
     stage('Push the Artifact into Nexus') {
       steps {
       	nexusArtifactUploader artifacts: [
-			[
-				artifactId: 'DevOpsDemo', 
-				classifier: '', 
-				file: 'target/DevOpsDemo.war', 
-				type: 'war'
-			]
+		[
+			artifactId: 'DevOpsDemo', 
+			classifier: '', 
+			file: 'target/DevOpsDemo.war', 
+			type: 'war'
+		]
 	], 
 	credentialsId: 'nexusauth', 
 	groupId: 'com.blazeclan', 
